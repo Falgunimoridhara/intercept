@@ -94,7 +94,7 @@ That means a matching prompt injection attempt throws a `PromptInjectionGuardExc
 
 ```php
 use PromptPHP\Intercept\InjectionGuard\Exceptions\PromptInjectionGuardException;
-use PromptPHP\Intercept\Exceptions\InterceptException;
+use PromptPHP\Intercept\Support\Exceptions\InterceptException;
 
 try {
     $response = SupportAgent::prompt($message);
