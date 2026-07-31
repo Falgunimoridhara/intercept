@@ -11,6 +11,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+### Removed
+
+## [0.1.9] - 2026-07-31
+
+### Added
+
+- Added tool approval decision scanning to `PromptInjectionGuard` and `PIIRedactor`.
+  When a paused agent run is resumed with `Decisions`, the prompt text is empty and the only new
+  content is what a human supplied while resolving the pending tool calls. Edited tool arguments
+  and rejection results previously reached the AI provider unscanned.
+- Added the `ScansApprovalDecisions` concern and the `ApprovalDecisionSegment` value object to the
+  Support package, so both middleware extract decision content identically.
+- Added a `scan_approval_decisions` option to both middleware, enabled by default and configurable
+  through `config/intercept.php` or the middleware constructors.
+- Added documentation for tool approval resumes, including what Intercept can and cannot inspect.
+
+### Changed
+
+- Blocked resumed runs now report the offending tool call and field in the
+  `PromptInjectionGuardException` message. The matched text is never included.
+- Resumed prompts are immutable by design, because a paused turn must replay verbatim against the
+  provider that recorded it. The `redact`, `mask`, `sanitize`, and `warn` actions therefore degrade
+  to logging on that path, recorded in logs as `degraded_from`. Blocked entities and the `block`
+  action still stop the run.
+- `promptphp/intercept-support` now requires `laravel/ai`, since the shared concern reads the
+  SDK's approval decision types. Both middleware packages already required it.
+- Corrected the supported entity list in the configuration reference, which was missing
+  `mac_address` and `url`.
+
 ### Fixed
 
 ### Removed
